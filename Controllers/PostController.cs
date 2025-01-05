@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using BlogApi.Data;
 using BlogApi.Models;
+using BlogApi.Services;
 
 namespace BlogApi.Controllers
 {
@@ -9,33 +8,38 @@ namespace BlogApi.Controllers
     [Route("api/[controller]")]
     public class PostController : ControllerBase
     {
-        private readonly BlogContext _context;
+        private readonly PostService _postService;
 
-        public PostController(BlogContext context)
+        public PostController()
         {
-            _context = context;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetPosts()
-        {
-            var posts = await _context.Posts.OrderByDescending(p => p.CreatedAt).ToListAsync();
-            return Ok(posts);
+            _postService = new PostService();
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody] Post post)
+        public async Task<ActionResult<Post>> CreatePost(Post post)
         {
-            post.CreatedAt = DateTime.UtcNow;
-            _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetPosts), new { id = post.Id }, post);
+            await _postService.CreatePost(post);
+            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePost(int id)
+        {
+            await _postService.DeletePost(id);
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Post>> GetAllPosts()
+        {
+            var posts = await _postService.GetAllPosts();
+            return Ok(posts);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPost(int id)
+        public async Task<ActionResult<Post>> GetPost(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _postService.GetPost(id);
 
             if (post == null)
             {
@@ -46,32 +50,21 @@ namespace BlogApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePost(int id, [FromBody] Post post)
+        public async Task<ActionResult> UpdatePost(int id, Post post)
         {
             if (id != post.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(post).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
-        {
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
-            {
+            var UpdatePost = await _postService.UpdatePost(id, post);
+            if(UpdatePost == null){
                 return NotFound();
             }
 
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(post);
         }
+
+   
     }
 }
