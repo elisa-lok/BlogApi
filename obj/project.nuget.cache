@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "iEQPRfURVCo=",
+  "dgSpecHash": "pVT/fkTT1ik=",
   "success": true,
   "projectFilePath": "/Users/elisa/Dev/dotnet/BlogApi/BlogApi.csproj",
   "expectedPackageFiles": [
+    "/Users/elisa/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/elisa/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/elisa/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/elisa/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/elisa/.nuget/packages/microsoft.aspnetcore.openapi/8.0.6/microsoft.aspnetcore.openapi.8.0.6.nupkg.sha512",
     "/Users/elisa/.nuget/packages/microsoft.bcl.asyncinterfaces/7.0.0/microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
