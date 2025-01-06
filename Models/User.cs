@@ -13,6 +13,8 @@ public class User
 
   public string PhoneNumber { get; set; } = string.Empty;
 
+  public string Country { get; set; } = string.Empty; 
+
   public DateTime CreatedAt { get; set; } = DateTime.Now;
 
   public DateTime UpdatedAt { get; set; } = DateTime.Now;
