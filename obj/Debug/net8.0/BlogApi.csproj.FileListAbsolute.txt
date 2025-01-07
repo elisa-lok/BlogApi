@@ -158,3 +158,6 @@
 /Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/runtimes/win-x86/native/e_sqlite3.dll
 /Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /Users/elisa/Dev/dotnet/BlogApi/obj/Debug/net8.0/BlogApi.sourcelink.json
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll

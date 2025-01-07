@@ -2,19 +2,23 @@ using BlogApi.Models;
 
 namespace BlogApi.Services;
 
-public class PostService() {
+public class PostService: IPostService
+{
   private static readonly List<Post> AllPosts = new();
 
-  public Task CreatePost(Post post) {
+  public Task<Post> CreatePost(Post post) {
+    post.Id = AllPosts.Max(p => p.Id) + 1;
     AllPosts.Add(post);
-    return Task.CompletedTask;
+    //return Task.CompletedTask;
+    return Task.FromResult(post);
   }
 
   public Task DeletePost(int id) {
     var post = AllPosts.FirstOrDefault(p => p.Id == id);
-    if (post != null) {
-      AllPosts.Remove(post);
+    if (post == null) {
+      throw new KeyNotFoundException();
     }
+    AllPosts.Remove(post);
     return Task.CompletedTask;
   }
 
@@ -35,4 +39,13 @@ public class PostService() {
     }
     return Task.FromResult(existingPost);
   }
+
+  // public Task<Post> UpdatePostAsync(int id, Post post){
+  //   var index = AllPosts.FindIndex(p => p.Id == id);
+  //   if(index == -1){
+  //     throw new KeyNotFoundException();
+  //   }
+  //   AllPosts[index] = post;
+  //   return Task.FromResult(post);
+  // }
 }
