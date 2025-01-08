@@ -38,13 +38,4 @@ public class PostService: IPostService
     }
     return Task.FromResult(existingPost);
   }
-
-  // public Task<Post> UpdatePostAsync(int id, Post post){
-  //   var index = AllPosts.FindIndex(p => p.Id == id);
-  //   if(index == -1){
-  //     throw new KeyNotFoundException();
-  //   }
-  //   AllPosts[index] = post;
-  //   return Task.FromResult(post);
-  // }
 }
