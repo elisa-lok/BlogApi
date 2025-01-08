@@ -9,7 +9,6 @@ public class PostService: IPostService
   public Task<Post> CreatePost(Post post) {
     post.Id = AllPosts.Max(p => p.Id) + 1;
     AllPosts.Add(post);
-    //return Task.CompletedTask;
     return Task.FromResult(post);
   }
 
