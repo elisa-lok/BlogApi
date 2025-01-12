@@ -1,7 +1,6 @@
 namespace BlogApi.Models
 {
   public class RequestLog
-
 {
     public int Id { get; set; }
     public string Method { get; set; } = string.Empty;
