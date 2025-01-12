@@ -9,6 +9,8 @@ namespace BlogApi.Models
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public PostStatus Status { get; set; } = PostStatus.PendingReview;
+    public int CategoryId { get; set; }
+    public Category Category { get; set; } = null!;
   }
     public enum PostStatus
     {
