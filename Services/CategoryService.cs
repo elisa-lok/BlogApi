@@ -11,6 +11,7 @@ public class CategoryService: ICategoryService
         new() { Id = 2, Name = "Lifestyle", Description = "Posts about lifestyle and daily activities." },
         new() { Id = 3, Name = "Health", Description = "Posts related to health and wellness." }
     };
+    private static readonly List<Post> AllPosts = new();
     public Task<List<Category>> GetCategoriesAsync()
     {
         return Task.FromResult(Categories);
@@ -23,7 +24,7 @@ public class CategoryService: ICategoryService
 
     public Task<Category> CreateCategoryAsync(Category category)
     {
-        category.Id = Categories.Count + 1;
+        category.Id = Categories.Any() ? Categories.Count + 1 : 1;
         Categories.Add(category);
         return Task.FromResult(category);
     }
@@ -45,6 +46,7 @@ public class CategoryService: ICategoryService
         {
             throw new InvalidOperationException($"Category with id {id} not found.");
         }
+        AllPosts.RemoveAll(p => p.CategoryId == id);
         Categories.Remove(category);
         return Task.CompletedTask;
     }

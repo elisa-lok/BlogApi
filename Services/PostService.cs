@@ -7,7 +7,7 @@ public class PostService: IPostService
   private static readonly List<Post> AllPosts = new();
 
   public Task<Post> CreatePost(Post post) {
-    post.Id = AllPosts.Max(p => p.Id) + 1;
+    post.Id = AllPosts.Any() ? AllPosts.Max(p => p.Id) + 1 : 1;
     AllPosts.Add(post);
     return Task.FromResult(post);
   }
@@ -25,6 +25,12 @@ public class PostService: IPostService
     return Task.FromResult(AllPosts);
   }
 
+  public Task<List<Post>> GetPostsByCategoryId(int categoryId)
+  {
+    var posts = AllPosts.Where(p => p.CategoryId == categoryId).ToList();
+    return Task.FromResult(posts);
+  }
+
   public Task<Post?> GetPost(int id){
     var post = AllPosts.FirstOrDefault(p => p.Id == id);
     return Task.FromResult(post);
@@ -35,6 +41,7 @@ public class PostService: IPostService
     if (existingPost != null) {
       existingPost.Title = post.Title;
       existingPost.Content = post.Content;
+      existingPost.CategoryId = post.CategoryId;
     }
     return Task.FromResult(existingPost);
   }
