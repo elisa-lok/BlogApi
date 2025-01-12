@@ -11,7 +11,12 @@ public class CategoryService: ICategoryService
         new() { Id = 2, Name = "Lifestyle", Description = "Posts about lifestyle and daily activities." },
         new() { Id = 3, Name = "Health", Description = "Posts related to health and wellness." }
     };
-    private static readonly List<Post> AllPosts = new();
+  private static readonly List<Post> AllPosts = new()
+    {
+      new() { Id = 1, Title = "Tech Post 1", Content = "Content 1", CategoryId = 1 },
+      new() { Id = 2, Title = "Lifestyle Post 1", Content = "Content 1", CategoryId = 2 },
+      new() { Id = 3, Title = "Health Post 1", Content = "Content 1", CategoryId = 3 }
+    };
     public Task<List<Category>> GetCategoriesAsync()
     {
         return Task.FromResult(Categories);

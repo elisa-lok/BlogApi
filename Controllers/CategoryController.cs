@@ -10,10 +10,12 @@ namespace BlogApi.Controllers
       public class CategoryController : ControllerBase
       {
           private readonly ICategoryService _categoryService;
+          private readonly IPostService _postService;
 
-          public CategoryController(ICategoryService categoryService)
+          public CategoryController(ICategoryService categoryService, IPostService postService)
           {
-            _categoryService = categoryService;
+              _categoryService = categoryService;
+              _postService = postService;
           }
 
           [HttpGet]
@@ -35,6 +37,11 @@ namespace BlogApi.Controllers
             {
               try
               {
+                var postsInCategory = await _postService.GetPostsByCategoryId(id);
+                if(postsInCategory.Any())
+                {
+                  return BadRequest(new { Message = $"Cannot delete category with associated posts." });
+                }
                 await _categoryService.DeleteCategoryAsync(id);
                 return NoContent();
               }
@@ -61,7 +68,7 @@ namespace BlogApi.Controllers
             {
               if (!ModelState.IsValid || id != category.Id)
               {
-                return BadRequest(new { Message = "Invalid request data." });
+                return BadRequest(new { Message = "Invalid request data or ID mismatch." });
               }
 
             try

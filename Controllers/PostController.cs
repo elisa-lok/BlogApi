@@ -8,18 +8,32 @@ namespace BlogApi.Controllers
     [Route("api/[controller]")]
     public class PostController : ControllerBase
     {
-        private readonly PostService _postService;
+        private readonly IPostService _postService;
+        private readonly ICategoryService _categoryService;
 
-        public PostController()
+        public PostController(IPostService postService, ICategoryService categoryService)
         {
-            _postService = new PostService();
+            _postService = postService;
+            _categoryService = categoryService;
         }
 
         [HttpPost]
         public async Task<ActionResult<Post>> CreatePost(Post post)
         {
-            await _postService.CreatePost(post);
-            return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
+            if(post == null)
+            {
+                return BadRequest("Post data is required");
+            }
+
+            var category = await _categoryService.GetCategoryAsync(post.CategoryId);
+            if(category == null)
+            {
+              return BadRequest("Invalid CategoryId");
+            }
+
+            post.Category = category;
+            var createdPost = await _postService.CreatePost(post);
+            return CreatedAtAction(nameof(GetPost), new { id = createdPost.Id }, createdPost);
         }
 
         [HttpDelete("{id}")]
@@ -54,15 +68,23 @@ namespace BlogApi.Controllers
         {
             if (id != post.Id)
             {
-                return BadRequest();
+                return BadRequest("Post ID mismatch");
             }
+
+            var category = await _categoryService.GetCategoryAsync(post.CategoryId);
+            if(category == null)
+            {
+                return BadRequest("Invalid CategoryId");
+            }
+
+            post.Category = category;
 
             var UpdatePost = await _postService.UpdatePost(id, post);
             if(UpdatePost == null){
                 return NotFound();
             }
 
-            return Ok(post);
+            return Ok(UpdatePost);
         }
 
    
