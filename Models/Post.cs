@@ -6,6 +6,8 @@ namespace BlogApi.Models
   {
     public int Id { get; set; }
 
+    public int UserId { get; set; }
+
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = string.Empty;

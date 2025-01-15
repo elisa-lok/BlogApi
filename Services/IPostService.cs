@@ -10,4 +10,5 @@ public interface IPostService
   Task<Post> CreatePost(Post post);
   Task<Post?> UpdatePost(int id, Post post);
   Task DeletePost(int id); 
+  Task<List<Post>> GetPostsByUserId(int userId);
 }
