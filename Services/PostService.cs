@@ -55,8 +55,40 @@ public class PostService: IPostService
     return Task.FromResult(existingPost);
   }
 
+  public Task<Post?> PublishPost(int id)
+  {
+    var post = AllPosts.FirstOrDefault(x => x.Id == id);
+    if (post != null)
+    {
+      post.Status = PostStatus.Published;
+    }
+
+      return Task.FromResult(post);
+   }
+
+  public Task<Post?> UnpublishPost(int id)
+  {
+    var post = AllPosts.FirstOrDefault(x => x.Id == id);
+    if (post != null)
+    {
+      post.Status = PostStatus.unPublished;
+    }
+
+    return Task.FromResult(post);
+  }
+
   public Task<List<Post>> GetPostsByUserId(int userId)
   {
     return Task.FromResult(AllPosts.Where(x => x.UserId == userId).ToList());
+  }
+
+  public Task<List<Post>> GetPosts(int pageIndex, int pageSize)
+  {
+    return Task.FromResult(AllPosts.Skip(pageIndex * pageSize).Take(pageSize).ToList());
+  }
+
+  public Task<List<Post>> SearchPosts(string keyword)
+  {
+     return Task.FromResult(AllPosts.Where(x => x.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase)).ToList());
   }
 }
