@@ -19,6 +19,7 @@ namespace BlogApi.Models
     public DateTime UpdatedAt { get; set; }
     public PostStatus Status { get; set; } = PostStatus.Published;
     public int CategoryId { get; set; }
+    //public Guid? CategoryId { get; set; }
     public Category Category { get; set; } = null!;
   }
     public enum PostStatus
