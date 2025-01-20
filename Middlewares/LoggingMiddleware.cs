@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using BlogApi.Data;
 using BlogApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi.Middlewares
 {
