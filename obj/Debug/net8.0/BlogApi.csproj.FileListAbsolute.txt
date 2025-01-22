@@ -161,3 +161,12 @@
 /Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.dll
 /Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
 /Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.Bcl.Memory.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
+/Users/elisa/Dev/dotnet/BlogApi/bin/Debug/net8.0/System.IdentityModel.Tokens.Jwt.dll
