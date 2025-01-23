@@ -1,7 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlogApi.Models
 {
+  // the data annotation attributes are overridden by Fluent API configuration in the DbContext.
+  [Table("Invoices")]
   public class Post
   {
     public int Id { get; set; }

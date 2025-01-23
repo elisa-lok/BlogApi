@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BlogApi.Models;
+using BlogApi.Data.Configurations;
 
 namespace BlogApi.Data
 {
@@ -18,16 +19,8 @@ namespace BlogApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Post>()
-            .HasOne(p => p.Category)
-            .WithMany(c => c.Posts)
-            .HasForeignKey(p => p.CategoryId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Category>()
-            .HasMany(c => c.Posts)
-            .WithOne(p => p.Category)
-            .HasForeignKey(p => p.CategoryId);
+            modelBuilder.ApplyConfiguration(new PostConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
         }
     }
