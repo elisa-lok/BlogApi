@@ -15,7 +15,7 @@ namespace BlogApi.Middlewares
         _logger = logger;
     }
 
-    public async Task InvokeAsync(HttpContext context, BlogContext blogContext)
+    public async Task InvokeAsync(HttpContext context, BlogDbContext blogDbContext)
     {
       var request = await FormatRequest(context.Request);
 
@@ -45,8 +45,8 @@ namespace BlogApi.Middlewares
           ProcessingTime = stopwatch.ElapsedMilliseconds
         };
 
-        blogContext.RequestLogs.Add(log);
-        await blogContext.SaveChangesAsync();
+        blogDbContext.RequestLogs.Add(log);
+        await blogDbContext.SaveChangesAsync();
 
         await ResponseBody.CopyToAsync(originalBodyStream);
       }

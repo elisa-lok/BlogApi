@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlogApi.Migrations
 {
-    [DbContext(typeof(BlogContext))]
+    [DbContext(typeof(BlogDbContext))]
     [Migration("20250112040811_InitialCreate2")]
     partial class InitialCreate2
     {
