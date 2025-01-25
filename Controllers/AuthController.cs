@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using BlogApi.Models;
+using Microsoft.EntityFrameworkCore;
+using BlogApi.Data;
 
 namespace BlogApi.Controllers
 {
@@ -12,36 +14,29 @@ namespace BlogApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly BlogDbContext _context;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, BlogDbContext context)
         {
             _configuration = configuration;
+            _context = context;
         }
 
-        private User? AuthenticateUser(string email, string password)
+        private async Task<User?> AuthenticateUserAsync(string email, string password)
         {
-            var fakeUser = new User
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if(user != null && BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
-                Id = 1,
-                Name = "Test User",
-                Email = "test@example.com",
-                Password = "password123", 
-                Role = "User",
-                Status = "active"
-            };
-
-            if (fakeUser.Email == email && fakeUser.Password == password)
-            {
-                return fakeUser.Status == "active" ? fakeUser : null;
+                return user.Status == "active" ? user : null;
             }
 
             return null;
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = AuthenticateUser(request.Email, request.Password);
+            var user = await AuthenticateUserAsync(request.Email, request.Password);
 
             if (user == null)
             {
@@ -58,6 +53,30 @@ namespace BlogApi.Controllers
                 userRole = user.Role
             });
         }
+
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        if (existingUser != null)
+        {
+            return BadRequest(new { message = "Email is already registered." });
+        }
+
+        var newUser = new User
+        { 
+            Name = request.Name,
+            Email = request.Email,
+            Password = BCrypt.Net.BCrypt.HashPassword(request.Password), 
+            Role = "User",
+            Status = "active"
+        };
+
+        _context.Users.Add(newUser);
+
+        return Ok(new { message = "Registration successful!" });
+     }
 
         private string GenerateJwtToken(User user)
         {
@@ -85,6 +104,13 @@ namespace BlogApi.Controllers
 
     public class LoginRequest
     {
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class RegisterRequest
+    {
+        public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
