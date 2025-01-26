@@ -19,8 +19,10 @@ namespace BlogApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            
 
         }
     }
