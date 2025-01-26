@@ -71,12 +71,28 @@ namespace BlogApi.Controllers
             Email = request.Email,
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password), 
             Role = "User",
-            Status = "active"
+            Status = "active",
+            Country = "New Zealand",
+            PhoneNumber = request.PhoneNumber,
         };
 
         _context.Users.Add(newUser);
 
-        return Ok(new { message = "Registration successful!" });
+        try
+        {
+            await _context.SaveChangesAsync();
+            var userResponse = new 
+            {
+                userId = newUser.Id,
+                userName = newUser.Name,
+                userRole = newUser.Role
+            };
+            return Ok(new { message = "Registration successful!", user = userResponse });
+        }
+        catch (Exception ex)
+        {
+        return StatusCode(500, new { message = "An error occurred while saving data.", error = ex.Message });
+        }
      }
 
         private string GenerateJwtToken(User user)
@@ -115,5 +131,6 @@ namespace BlogApi.Controllers
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
     }
 }
