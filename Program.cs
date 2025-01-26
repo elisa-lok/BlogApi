@@ -48,7 +48,14 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    db.Database.EnsureCreated();
+    if (db.Database.EnsureCreated())
+{
+    Console.WriteLine("Database has been created successfully.");
+}
+else
+{
+    Console.WriteLine("Database already exists.");
+}
 }
 
 //app.UseMiddleware<LoggingMiddleware>();
