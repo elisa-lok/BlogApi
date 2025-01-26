@@ -9,8 +9,9 @@ using BlogApi.Data;
 
 namespace BlogApi.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
+
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;

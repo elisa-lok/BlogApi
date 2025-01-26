@@ -6,8 +6,11 @@ namespace BlogApi.Data
 {
       public class BlogDbContext : DbContext
     {
-        public BlogDbContext(DbContextOptions<BlogDbContext> options) : base(options)
+        private readonly IConfiguration _configuration;
+        public BlogDbContext(DbContextOptions<BlogDbContext> options, IConfiguration configuration) 
+        : base(options)
         {
+            _configuration = configuration;
         }
 
         public DbSet<User> Users { get; set; } = null!;
@@ -22,8 +25,24 @@ namespace BlogApi.Data
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.ApplyConfiguration(new PostConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            
+        }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            var connectionString = _configuration.GetSection("Database:ConnectionStrings:DefaultConnection").Value;
+
+            //var connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                optionsBuilder.UseSqlite(connectionString);
+            }
+            else
+            {
+                throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+            }
         }
     }
 }
