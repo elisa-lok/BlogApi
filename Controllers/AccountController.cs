@@ -29,5 +29,20 @@ namespace BlogApi.Controllers
 
       return Ok(new { Message = "Username updated successfully" });
     }
+
+    [HttpPut("UpdatePhone")]
+    public async Task<IActionResult> UpdatePhone(int id, string newPhoneNumber)
+    {
+      var user = _context.Users.FirstOrDefault(u => u.Id == id);
+      if (user == null)
+      {
+       return NotFound(new { Message = "User not found" });
+      }
+
+      user.PhoneNumber = newPhoneNumber;
+      await _context.SaveChangesAsync();
+
+      return Ok(new { Message = "PhoneNumber updated successfully" });
+    }
   }
 }
