@@ -30,8 +30,8 @@ namespace BlogApi.Controllers
       return Ok(new { Message = "Username updated successfully" });
     }
 
-    [HttpPut("UpdatePhone")]
-    public async Task<IActionResult> UpdatePhone(int id, string newPhoneNumber)
+    [HttpPut("UpdatePhoneNumber")]
+    public async Task<IActionResult> UpdatePhoneNumber(int id, string newPhoneNumber)
     {
       var user = _context.Users.FirstOrDefault(u => u.Id == id);
       if (user == null)
