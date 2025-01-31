@@ -1,5 +1,6 @@
 using BlogApi.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi.Controllers
 {
@@ -44,5 +45,25 @@ namespace BlogApi.Controllers
 
       return Ok(new { Message = "PhoneNumber updated successfully" });
     }
-  }
+
+    [HttpPut("UpdatePassword")]
+    public async Task<IActionResult> UpdatePassword(int id, string currentPassword, string newPassword)
+    {
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+      if (user == null)
+      {
+        return NotFound(new { Message = "User not found" });
+      }
+
+      if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.Password))
+      {
+        return BadRequest(new { Message = "Current password is incorrect" });
+      }
+
+    user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
+    await _context.SaveChangesAsync();
+
+    return Ok(new { Message = "Password updated successfully" });
+    }
+  } 
 }
