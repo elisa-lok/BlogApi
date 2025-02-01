@@ -57,7 +57,7 @@ namespace BlogApi.Controllers
 
       if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.Password))
       {
-        return BadRequest(new { Message = "Current password is incorrect" });
+        return BadRequest(new { Message = "Your password is incorrect" });
       }
 
     user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
