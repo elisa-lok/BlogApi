@@ -86,5 +86,21 @@ namespace BlogApi.Controllers
 
       return Ok(new { Message = "Email updated successfully" });
     }
+
+    [HttpDelete("DeleteAccount")]
+    public async Task<IActionResult> DeleteAccount(int id)
+    { 
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+      if (user == null)
+      {
+        return NotFound(new { Message = "User not found" });
+      }
+
+      _context.Users.Remove(user);
+      await _context.SaveChangesAsync();
+
+      return Ok(new { Message = "Account deleted successfully" });
+    }
+
   } 
 }
