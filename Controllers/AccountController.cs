@@ -65,5 +65,26 @@ namespace BlogApi.Controllers
 
     return Ok(new { Message = "Password updated successfully" });
     }
+
+    [HttpPut("UpdateEmail")]
+    public async Task<IActionResult> UpdateEmail(int id, string newEmail)
+    {
+      var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+      if (user == null)
+      {
+        return NotFound(new { Message = "User not found" });
+      }
+
+    
+      if (await _context.Users.AnyAsync(u => u.Email == newEmail))
+      {
+        return BadRequest(new { Message = "Email already in use" });
+      }
+
+      user.Email = newEmail;
+      await _context.SaveChangesAsync();
+
+      return Ok(new { Message = "Email updated successfully" });
+    }
   } 
 }
