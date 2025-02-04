@@ -96,10 +96,11 @@ namespace BlogApi.Controllers
         return NotFound(new { Message = "User not found" });
       }
 
-      _context.Users.Remove(user);
+      //_context.Users.Remove(user);
+      user.Status = "deleted";
       await _context.SaveChangesAsync();
 
-      return Ok(new { Message = "Account deleted successfully" });
+      return Ok(new { Message = "Account status updated to deleted" });
     }
 
   } 
