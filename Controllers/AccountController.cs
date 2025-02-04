@@ -78,7 +78,7 @@ namespace BlogApi.Controllers
     
       if (await _context.Users.AnyAsync(u => u.Email == newEmail))
       {
-        return BadRequest(new { Message = "Email already in use" });
+        return BadRequest(new { Message = "Email has been used already" });
       }
 
       user.Email = newEmail;
