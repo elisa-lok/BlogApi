@@ -103,7 +103,7 @@ namespace BlogApi.Controllers
       }
 
       string resetToken = GenerateResetToken(email);
-      string resetLink = $"http://myfrontend.com/reset-password?token={resetToken}";
+      string resetLink = $"http://myPersonalBlog.com/reset-password?token={resetToken}";
 
       SendResetEmail(user.Email, resetLink);
 
