@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
 
 namespace BlogApi.Controllers
 {
@@ -16,10 +17,12 @@ namespace BlogApi.Controllers
   public class AccountController : ControllerBase
   { 
     private readonly BlogDbContext _context;
+    private readonly IConfiguration _configuration;
 
-    public AccountController(BlogDbContext context)
+    public AccountController(BlogDbContext context, IConfiguration configuration)
     {
       _context = context;
+      _configuration = configuration;
     }
 
     [HttpPut("UpdateUserName")]
@@ -114,17 +117,18 @@ namespace BlogApi.Controllers
     public async Task<IActionResult> ResetPassword(string token, string newPassword)
     {
       var tokenHandler = new JwtSecurityTokenHandler();
-      var key = Encoding.UTF8.GetBytes("Your_Secret_Key");
+      //var key = _configuration.GetSection("My_Key").Value; 
+       var key = Encoding.UTF8.GetBytes(_configuration["My_Key"]); 
 
       try
       {
         var claims = tokenHandler.ValidateToken(token, new TokenValidationParameters
         {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
+          ValidateIssuerSigningKey = true,
+          IssuerSigningKey = new SymmetricSecurityKey(key),
+          ValidateIssuer = false,
+          ValidateAudience = false,
+          ClockSkew = TimeSpan.Zero
         }, out SecurityToken validatedToken);
 
         var email = claims.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
@@ -132,7 +136,7 @@ namespace BlogApi.Controllers
 
         if (user == null)
         {
-            return NotFound(new { Message = "User not found" });
+          return NotFound(new { Message = "User not found" });
         }
 
         // 更新密码
