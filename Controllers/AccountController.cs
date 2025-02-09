@@ -138,7 +138,6 @@ namespace BlogApi.Controllers
           return NotFound(new { Message = "User not found" });
         }
 
-        // 更新密码
         user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
         await _context.SaveChangesAsync();
 
