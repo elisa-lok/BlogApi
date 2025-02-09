@@ -118,7 +118,7 @@ namespace BlogApi.Controllers
     {
       var tokenHandler = new JwtSecurityTokenHandler();
       //var key = _configuration.GetSection("My_Key").Value; 
-       var key = Encoding.UTF8.GetBytes(_configuration["My_Key"]); 
+      var key = Encoding.UTF8.GetBytes(_configuration["My_Key"] ?? throw new ArgumentNullException("My_Key is missing from configuration")); 
 
       try
       {
