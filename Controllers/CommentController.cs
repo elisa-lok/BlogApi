@@ -37,6 +37,23 @@ namespace BlogApi.Controllers
       return Ok(comments);
     }
 
+    [HttpPost("reply")]  
+    public async Task<ActionResult<Comment>> ReplyToComment([FromBody] Comment reply)
+    {
+      if (reply == null || reply.ParentCommentId == null)
+      {
+        return BadRequest("Invalid reply data.");
+      }
+
+      var parentComment = await _commentService.GetComment(reply.ParentCommentId.Value);
+      if (parentComment == null)
+      {
+        return BadRequest("Parent comment not found.");
+      }
+
+      var createdReply = await _commentService.CreateComment(reply);
+      return CreatedAtAction(nameof(GetComment), new { id = createdReply.Id }, createdReply);
+    }
 
     [HttpPost]
     public async Task<ActionResult<Comment>> CreateComment([FromBody] Comment comment)
